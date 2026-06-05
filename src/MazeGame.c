@@ -2,31 +2,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef char* string;
+
 typedef struct {
-	int width;
-	int length;
-	char** grid[];
+	string* grid; 
 } Maze;
 
-Maze CreateMaze(int width, int length)
+
+Maze CreateMaze()
 {
 	Maze maze;
-	maze.width = width;
-	maze.length = length;
-	char** grid = "";
-	for (int i = 0; i < width; i++)
-	{
-		grid[i] = (char*)malloc(length * sizeof(char));
-	}
-	maze.grid = grid;
+	maze.grid = "###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############",
+				"###############";
 	return maze;
 }
 
-int main(char* argv[])
+int main(char** argv[])
 {
 	if (argv[0] == "--help")
 	{
 		printf("arrow keys to move\n");
+		free(argv);
 		return 0;
 	}
 	
