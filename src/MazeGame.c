@@ -181,19 +181,19 @@ void PlayGame(Maze maze)
 			atexit = true;
 			continue;
 		}
-		else if (input == 72) 
+		else if (input == 72 && maze.grid[maze.player[1] - 1][maze.player[0]] == ' ')
 		{
 			new_y--;
 		}
-		else if (input == 80) 
+		else if (input == 80 && maze.grid[maze.player[1] + 1][maze.player[0]] == ' ')
 		{
 			new_y++;
 		}
-		else if (input == 75)
+		else if (input == 75 && maze.grid[maze.player[1]][maze.player[0] - 1] == ' ')
 		{
 			new_x--;
 		}
-		else if (input == 77)
+		else if (input == 77 && maze.grid[maze.player[1]][maze.player[0] + 1] == ' ')
 		{
 			new_x++;
 		}
