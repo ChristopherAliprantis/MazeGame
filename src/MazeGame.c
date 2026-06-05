@@ -27,6 +27,8 @@ Maze CreateMaze()
 				"###############",
 				"###############",
 				"###############";
+	int start = (rand() % 14) + 1;
+	int end = (rand() % 14) + 1;
 	return maze;
 }
 
