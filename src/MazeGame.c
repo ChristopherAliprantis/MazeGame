@@ -37,6 +37,14 @@ Maze CreateMaze()
         "###############",
         "###############",
         "###############",
+        "###############",
+        "###############",
+        "###############",
+        "###############",
+        "###############",
+        "###############",
+        "###############",
+        "###############"
     };
 
     for (int i = 0; i < 15; i++)
@@ -44,14 +52,14 @@ Maze CreateMaze()
         maze.grid[i] = filledmaze[i];
     }
 
-    int start_column = (rand() % 14) + 1;
-    int end_column = (rand() % 14) + 1;
+    int start_col = (rand() % 13) + 1;
+    int end_col = (rand() % 13) + 1;
 
-    maze.start[0] = start_column;
+    maze.start[0] = start_col;
     maze.start[1] = 0;
 
-    maze.end[0] = 7;
-    maze.end[1] = end_column;
+    maze.end[0] = end_col;
+    maze.end[1] = 14;
 
     maze.player[0] = maze.start[0];
     maze.player[1] = maze.start[1];
@@ -67,17 +75,17 @@ Maze CreateMaze()
     {
         maze.grid[currentmazemakingcoord[1]][currentmazemakingcoord[0]] = ' ';
 
-        if (currentmazemakingcoord[0] < maze.end[0] && (rand() % 2 == 0 || currentmazemakingcoord[1] == maze.end[1]))
-        {
-            currentmazemakingcoord[0]++;
-        }
-        else if (currentmazemakingcoord[1] < maze.end[1])
+        if (currentmazemakingcoord[1] < maze.end[1] && (rand() % 2 == 0 || currentmazemakingcoord[0] == maze.end[0]))
         {
             currentmazemakingcoord[1]++;
         }
-        else if (currentmazemakingcoord[1] > maze.end[1])
+        else if (currentmazemakingcoord[0] < maze.end[0])
         {
-            currentmazemakingcoord[1]--;
+            currentmazemakingcoord[0]++;
+        }
+        else if (currentmazemakingcoord[0] > maze.end[0])
+        {
+            currentmazemakingcoord[0]--;
         }
     }
 
@@ -86,7 +94,7 @@ Maze CreateMaze()
 
 int main(int argc, char* argv[])
 {
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
 
     if (argc > 1 && strcmp(argv[1], "--help") == 0)
     {
