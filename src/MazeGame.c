@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <conio.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -167,17 +168,79 @@ Maze CreateMaze()
     return maze;
 }
 
+void PlayGame(Maze maze)
+{
+	bool atexit = false;
+	while (!atexit)
+	{
+		char input = _getch();
+		int new_x = maze.player[0];
+		int new_y = maze.player[1];
+		if (input == 27) 
+		{
+			atexit = true;
+			continue;
+		}
+		else if (input == 72) 
+		{
+			new_y--;
+		}
+		else if (input == 80) 
+		{
+			new_y++;
+		}
+		else if (input == 75)
+		{
+			new_x--;
+		}
+		else if (input == 77)
+		{
+			new_x++;
+		}
+		if (maze.grid[new_y][new_x] == ' ')
+		{
+			maze.player[0] = new_x;
+			maze.player[1] = new_y;
+			system("cls");
+			PrintMaze(maze);
+			if (maze.player[0] == maze.end[0] && maze.player[1] == maze.end[1])
+			{
+				printf("Congratulations! You've reached the end of the maze!\n");
+				atexit = true;
+			}
+		}
+	}
+}
+
 int main(int argc, char* argv[])
 {
     srand((unsigned int)time(NULL));
 
     if (argc > 1 && strcmp(argv[1], "--help") == 0)
     {
-        printf("arrow keys to move\n");
+        printf("arrow keys to move and escape key to exit a game\n");
         return 0;
     }
-
-    Maze maze = CreateMaze();
-    PrintMaze(maze);
+    bool re = true;
+    Maze* m = NULL;
+    while (re)
+    {
+        printf("(re)generate maze? (y/n): ");
+        char input;
+        scanf(" %c", &input);
+        if (input != 'Y' && input != 'y')
+        {
+            re = false;
+        }
+        else
+        {
+            system("cls");
+            Maze maze = CreateMaze();
+			m = &maze;
+            printf("Maze:\n");
+            PrintMaze(maze);
+        }
+    }
+    PlayGame(*m);
     return 0;
 }
