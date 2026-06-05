@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 #include <time.h>
 
 typedef char* string;
@@ -173,7 +174,8 @@ void PlayGame(Maze maze)
 	bool atexit = false;
 	while (!atexit)
 	{
-		char input = _getch();
+        char input = NULL;
+		input = _getch();
 		int new_x = maze.player[0];
 		int new_y = maze.player[1];
 		if (input == 27) 
@@ -181,19 +183,19 @@ void PlayGame(Maze maze)
 			atexit = true;
 			continue;
 		}
-		else if (input == 72 && maze.grid[maze.player[1] - 1][maze.player[0]] == ' ')
+		else if (input == 72 && maze.grid[maze.player[1] - 1][maze.player[0]] != '#')
 		{
 			new_y--;
 		}
-		else if (input == 80 && maze.grid[maze.player[1] + 1][maze.player[0]] == ' ')
+		else if (input == 80 && maze.grid[maze.player[1] + 1][maze.player[0]] != '#')
 		{
 			new_y++;
 		}
-		else if (input == 75 && maze.grid[maze.player[1]][maze.player[0] - 1] == ' ')
+		else if (input == 75 && maze.grid[maze.player[1]][maze.player[0] - 1] != '#')
 		{
 			new_x--;
 		}
-		else if (input == 77 && maze.grid[maze.player[1]][maze.player[0] + 1] == ' ')
+		else if (input == 77 && maze.grid[maze.player[1]][maze.player[0] + 1] != '#')
 		{
 			new_x++;
 		}
@@ -201,6 +203,10 @@ void PlayGame(Maze maze)
 		{
 			maze.player[0] = new_x;
 			maze.player[1] = new_y;
+			if (maze.grid[maze.player[1]][maze.player[0]] == ' ') {
+				maze.grid[maze.player[1]][maze.player[0]] = 'P';
+			}
+
 			system("cls");
 			PrintMaze(maze);
 			if (maze.player[0] == maze.end[0] && maze.player[1] == maze.end[1])
@@ -221,26 +227,10 @@ int main(int argc, char* argv[])
         printf("arrow keys to move and escape key to exit a game\n");
         return 0;
     }
-    bool re = true;
-    Maze* m = NULL;
-    while (re)
-    {
-        printf("(re)generate maze? (y/n): ");
-        char input;
-        scanf(" %c", &input);
-        if (input != 'Y' && input != 'y')
-        {
-            re = false;
-        }
-        else
-        {
-            system("cls");
-            Maze maze = CreateMaze();
-			m = &maze;
-            printf("Maze:\n");
-            PrintMaze(maze);
-        }
-    }
-    PlayGame(*m);
+    system("cls");
+    Maze maze = CreateMaze();
+    printf("Maze:\n");
+    PrintMaze(maze);
+	PlayGame(maze);
     return 0;
 }
