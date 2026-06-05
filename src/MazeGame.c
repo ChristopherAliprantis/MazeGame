@@ -1,7 +1,9 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 typedef char* string;
 
@@ -10,74 +12,89 @@ typedef int coord[2];
 typedef struct {
     coord start;
     coord end;
+    coord player;
     string grid[15];
 } Maze;
 
-void PrintMaze()
+void PrintMaze(Maze maze)
 {
-
+    for (int i = 0; i < 15; i++)
+    {
+        printf("%s\n", maze.grid[i]);
+    }
 }
 
 Maze CreateMaze()
 {
     Maze maze;
 
-    string filledmaze[15] = {
-        "###############", 
-        "###############", 
-        "###############", 
-        "###############", 
-        "###############", 
-        "###############", 
-        "###############", 
-        "###############",
-        "###############", 
-        "###############", 
+    static char filledmaze[15][16] =
+    {
         "###############",
         "###############",
         "###############",
         "###############",
-        "###############"
+        "###############",
+        "###############",
+        "###############",
     };
 
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 15; i++)
+    {
         maze.grid[i] = filledmaze[i];
     }
-    free(filledmaze);
-    int start_row = (rand() % 14) + 1;
-    int end_row = (rand() % 14) + 1;
 
-    maze.start[0] = 0;
-    maze.start[1] = start_row;
+    int start_column = (rand() % 14) + 1;
+    int end_column = (rand() % 14) + 1;
 
-    maze.end[0] = 14;
-    maze.end[1] = end_row;
+    maze.start[0] = start_column;
+    maze.start[1] = 0;
+
+    maze.end[0] = 7;
+    maze.end[1] = end_column;
+
+    maze.player[0] = maze.start[0];
+    maze.player[1] = maze.start[1];
+
+    coord currentmazemakingcoord;
+    currentmazemakingcoord[0] = maze.player[0];
+    currentmazemakingcoord[1] = maze.player[1];
 
     maze.grid[maze.start[1]][maze.start[0]] = ' ';
     maze.grid[maze.end[1]][maze.end[0]] = ' ';
+
+    while (currentmazemakingcoord[0] != maze.end[0] || currentmazemakingcoord[1] != maze.end[1])
+    {
+        maze.grid[currentmazemakingcoord[1]][currentmazemakingcoord[0]] = ' ';
+
+        if (currentmazemakingcoord[0] < maze.end[0] && (rand() % 2 == 0 || currentmazemakingcoord[1] == maze.end[1]))
+        {
+            currentmazemakingcoord[0]++;
+        }
+        else if (currentmazemakingcoord[1] < maze.end[1])
+        {
+            currentmazemakingcoord[1]++;
+        }
+        else if (currentmazemakingcoord[1] > maze.end[1])
+        {
+            currentmazemakingcoord[1]--;
+        }
+    }
 
     return maze;
 }
 
 int main(int argc, char* argv[])
 {
+    srand(time(NULL));
+
     if (argc > 1 && strcmp(argv[1], "--help") == 0)
     {
         printf("arrow keys to move\n");
         return 0;
     }
 
+    Maze maze = CreateMaze();
+    PrintMaze(maze);
     return 0;
-}
-
-
-int main(int argc, char** argv[])
-{
-	if (argv[1] == "--help" && argc > 1)
-	{
-		printf("arrow keys to move\n");
-		free(argv);
-		return 0;
-	}
-	
 }
