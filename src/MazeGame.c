@@ -18,7 +18,7 @@ typedef struct {
 
 void PrintMaze(Maze maze)
 {
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < 7; i++)
     {
         printf("%s\n", maze.grid[i]);
     }
@@ -37,17 +37,9 @@ Maze CreateMaze()
         "###############",
         "###############",
         "###############",
-        "###############",
-        "###############",
-        "###############",
-        "###############",
-        "###############",
-        "###############",
-        "###############",
-        "###############"
     };
 
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < 7; i++)
     {
         maze.grid[i] = filledmaze[i];
     }
@@ -59,7 +51,7 @@ Maze CreateMaze()
     maze.start[1] = 0;
 
     maze.end[0] = end_col;
-    maze.end[1] = 14;
+    maze.end[1] = 6;
 
     maze.player[0] = maze.start[0];
     maze.player[1] = maze.start[1];
@@ -74,18 +66,39 @@ Maze CreateMaze()
     while (currentmazemakingcoord[0] != maze.end[0] || currentmazemakingcoord[1] != maze.end[1])
     {
         maze.grid[currentmazemakingcoord[1]][currentmazemakingcoord[0]] = ' ';
+        int next_x = currentmazemakingcoord[0];
+        int next_y = currentmazemakingcoord[1];
 
         if (currentmazemakingcoord[1] < maze.end[1] && (rand() % 2 == 0 || currentmazemakingcoord[0] == maze.end[0]))
         {
-            currentmazemakingcoord[1]++;
+            next_y++;
         }
         else if (currentmazemakingcoord[0] < maze.end[0])
         {
-            currentmazemakingcoord[0]++;
+            next_x++;
         }
         else if (currentmazemakingcoord[0] > maze.end[0])
         {
-            currentmazemakingcoord[0]--;
+            next_x--;
+        }
+        if ((next_x >= 1 && next_x <= 6 && next_y >= 1 && next_y <= 6) ||
+            (next_x == maze.start[0] && next_y == maze.start[1]) ||
+            (next_x == maze.end[0] && next_y == maze.end[1]))
+        {
+            currentmazemakingcoord[0] = next_x;
+            currentmazemakingcoord[1] = next_y;
+        }
+        else
+        {
+            if (currentmazemakingcoord[0] != maze.end[0])
+            {
+                if (currentmazemakingcoord[0] < maze.end[0]) currentmazemakingcoord[0]++;
+                else currentmazemakingcoord[0]--;
+            }
+            else
+            {
+                currentmazemakingcoord[1]++;
+            }
         }
     }
 
