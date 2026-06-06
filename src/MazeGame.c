@@ -201,6 +201,7 @@ void PlayGame(Maze maze)
 		}
 		if (maze.grid[new_y][new_x] == ' ')
 		{
+            maze.grid[maze.player[1]][maze.player[0]] = ' ';
 			maze.player[0] = new_x;
 			maze.player[1] = new_y;
 			if (maze.grid[maze.player[1]][maze.player[0]] == ' ') {

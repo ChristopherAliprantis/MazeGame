@@ -8,5 +8,5 @@
     <File Path=".gitignore" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="MazeGame.vcxproj" />
+  <Project Path="MazeGame.vcxproj" Id="fc950b53-3966-4110-9a9c-103c4fcba3ec" />
 </Solution>
